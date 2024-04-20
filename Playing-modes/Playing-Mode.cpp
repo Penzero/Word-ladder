@@ -7,12 +7,12 @@
 #include <cstdlib>
 #include <algorithm>
 
-using std::string, std::vector, std::cout, std::endl, std::cin, std::ofstream;
+using std::string, std::vector, std::cout, std::endl, std::cin, std::ofstream, std::ifstream;
 
 void game(const vector<string>& dictionary) {
     Graph<string> graph;
     populateGraph(graph, dictionary);
-    srand(static_cast<unsigned int>(time(nullptr))); // Seed random number generator
+    srand(static_cast<unsigned int>(time(nullptr))); // Seed the random number generator
 
     string start, target, name;
     cout << "Enter your name: ";
@@ -38,9 +38,9 @@ void game(const vector<string>& dictionary) {
 
     cout << "The start word is: " << start << " and the target word is: " << target << endl;
     vector<string> path = BFS(graph, start, target);
+    int pathLength = path.size() - 1;
     string lastWord = start, word;
-    vector<string> wordsUsed; 
-    wordsUsed.push_back(start); 
+    vector<string> wordsUsed = {start};
     int hints = 0, moves = 1;
 
     while (true) {
@@ -55,22 +55,30 @@ void game(const vector<string>& dictionary) {
             break;
         } else if (word == "hint") {
             hints++;
-            fout << "Requested hint,";
             path = BFS(graph, lastWord, target);
-            if (path.size() <= 1) {
-                cout << "No path found." << endl;
-                fout << "No path available" << endl;
-            } else {
-                cout << "Hint: ";
-                for (int i = 0; i < path[1].length(); ++i) {
+            if (path.size() > 1) {
+                word = path[1]; 
+                cout << "Moving to: ";
+                for (int i = 0; i < path[1].length(); i++) {
+ 
                     if (lastWord[i] != path[1][i]) {
-                        cout << "\033[1;31m" << path[1][i] << "\033[0m"; // Red color for different letter
+                        cout << "\033[1;31m" << path[1][i] << "\033[0m";  // Red color for the different letter
                     } else {
-                        cout << path[1][i];
+                        cout << lastWord[i];
                     }
                 }
                 cout << endl;
-                fout << "Given hint," << path[1] << endl;
+                lastWord = word;
+                wordsUsed.push_back(word);
+                fout << "Moved to hinted word," << word << endl;
+                if (word == target) {
+                    cout << "Congratulations! You found the target word!" << endl;
+                    fout << "Found target" << endl;
+                    break;
+                }
+            } else {
+                cout << "No path found." << endl;
+                fout << "No path available" << endl;
             }
         } else if (word == target) {
             cout << "Congratulations! You found the target word!" << endl;
@@ -92,15 +100,36 @@ void game(const vector<string>& dictionary) {
         moves++;
     }
 
-    fout.close();
+    fout.close(); // Close the CSV file
 
     // Print game summary
     cout << "Game summary:" << endl;
     cout << "Start word: " << start << " | Target word: " << target << endl;
+    const auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    cout << "Game ended at: " << std::ctime(&now);
     cout << "Total moves: " << moves << " | Total hints: " << hints << endl;
     cout << "Words used: ";
     for (const auto& usedWord : wordsUsed) cout << usedWord << " ";
     cout << endl;
-    cout << "The optimal number of moves was: " << path.size() - 1 << endl;
+    cout << "The optimal number of moves was: " << pathLength<< endl;
 }
+
+int main() {
+    vector<string> dictionary;
+    ifstream fin("dictionary.txt");
+    if (!fin.is_open()) {
+        cout << "Failed to open dictionary file." << endl;
+        return 1;
+    }
+
+    string word;
+    while (fin >> word) {
+        dictionary.push_back(word);
+    }
+
+    fin.close();
+    game(dictionary);
+
+    return 0;
+} 
 

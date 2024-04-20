@@ -1,0 +1,13 @@
+Move,Word,Action
+1,tale,Valid move
+2,tyle,Invalid move
+2,tane,Invalid move
+2,hint,Moved to hinted word,tare
+3,hint,Moved to hinted word,tyre
+4,tyle,Invalid move
+4,tyne,Found target
+Move,Word,Action
+1,hint,Moved to hinted word,yet
+2,hint,Moved to hinted word,yes
+3,hint,Moved to hinted word,des
+Found target
