@@ -1,6 +1,6 @@
 #include "Automatic-Mode.h"
 
-void game(const std::string start, const std::string target, const std::vector<std::string>& dictionary){
+void automatic(const std::string start, const std::string target, const std::vector<std::string>& dictionary){
     Graph<std::string> graph;
     populateGraph(graph, dictionary);
     std::vector<std::string> path = BFS(graph, start, target);

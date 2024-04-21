@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-void game(const std::vector<std::string>& dictionary);
+void playing(const std::vector<std::string>& dictionary);
 
 
 

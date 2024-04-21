@@ -11,3 +11,10 @@ Move,Word,Action
 2,hint,Moved to hinted word,yes
 3,hint,Moved to hinted word,des
 Found target
+Move,Word,Action
+Move,Word,Action
+1,hint,Moved to hinted word,fir
+2,hint,Moved to hinted word,for
+3,hint,Moved to hinted word,tor
+4,hint,Moved to hinted word,tom
+Found target

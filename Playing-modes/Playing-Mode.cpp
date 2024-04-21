@@ -9,7 +9,7 @@
 
 using std::string, std::vector, std::cout, std::endl, std::cin, std::ofstream, std::ifstream;
 
-void game(const vector<string>& dictionary) {
+void playing(const vector<string>& dictionary) {
     Graph<string> graph;
     populateGraph(graph, dictionary);
     srand(static_cast<unsigned int>(time(nullptr))); // Seed the random number generator
@@ -114,22 +114,4 @@ void game(const vector<string>& dictionary) {
     cout << "The optimal number of moves was: " << pathLength<< endl;
 }
 
-int main() {
-    vector<string> dictionary;
-    ifstream fin("dictionary.txt");
-    if (!fin.is_open()) {
-        cout << "Failed to open dictionary file." << endl;
-        return 1;
-    }
-
-    string word;
-    while (fin >> word) {
-        dictionary.push_back(word);
-    }
-
-    fin.close();
-    game(dictionary);
-
-    return 0;
-} 
 
